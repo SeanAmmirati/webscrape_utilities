@@ -32,17 +32,15 @@ class HumbleBundleHelper(WebDriverUtil):
         pass
         
     def find_outlook_code(self, search_depth):
-        if 'Protection' in self.driver.title:
-            BODY_SEARCH = self.humble['HUMBLE_BODY_SEARCH']
-            outlook = OutlookEmailUtility(**self.outlook)
-            email_body = outlook.search_email_subject('Humble.*Protection').\
-                                                      values()
-            import pdb; pdb.set_trace()
-            code = outlook.search_email_body(search_term=BODY_SEARCH, 
-                                             body=str(email_body),
-                                             grp_num='code')         
-            return code            
-            
+        BODY_SEARCH = self.humble['HUMBLE_BODY_SEARCH']
+        outlook = OutlookEmailUtility(**self.outlook)
+        email_body = outlook.search_email_subject('Humble.*Protection').\
+                                                  values()
+        code = outlook.search_email_body(search_term=BODY_SEARCH, 
+                                         body=str(email_body),
+                                         grp_num='code')         
+        return code            
+        
 if __name__ == '__main__':
     login_info = yaml.load(open('../conf/secrets.yaml'))['sign_in']
     login = login_info['email_address']
