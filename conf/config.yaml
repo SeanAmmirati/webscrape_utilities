@@ -1,4 +1,5 @@
 PATH_TO_DRIVER: '../conf/chromedriver.exe'
+CAPTCHA_WAIT_TIME: 30
 
 HUMBLE:
   URL: 'https://www.humblebundle.com'

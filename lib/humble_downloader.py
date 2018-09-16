@@ -6,13 +6,16 @@ Created on Sat Aug 25 14:04:02 2018
 """
 import itertools
 import re
+from time import sleep
+
+import win32com.client
+import yaml
+
+from helpers import create_abs_path
+from outlook_utility import OutlookEmailUtility
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import yaml
-import win32com.client
-from outlook_utility import OutlookEmailUtility
 from webdriver import WebDriverUtil
-from helpers import create_abs_path
 
 
 class HumbleBundleHelper(WebDriverUtil):
@@ -31,7 +34,7 @@ class HumbleBundleHelper(WebDriverUtil):
         email_entry.send_keys(Keys.RETURN)
 
     def solving_captcha(self):
-        pass
+        sleep(self.CAPTCHA_WAIT_TIME)
 
     def find_outlook_code(self, search_depth):
         BODY_SEARCH = self.HUMBLE['BODY_SEARCH']
@@ -43,6 +46,9 @@ class HumbleBundleHelper(WebDriverUtil):
                                          grp_num='code')
         return code
 
+    def enter_code(self, code):
+        pass
+
 if __name__ == '__main__':
     secrets_file = create_abs_path(__file__, '../conf/secrets.yaml')
     login_info = yaml.load(open(secrets_file))['sign_in']
@@ -52,6 +58,7 @@ if __name__ == '__main__':
     try:
         browser = HumbleBundleHelper()
         browser.login_to_humble(login, password)
+        print(browser.find_outlook_code(3))
     except Exception as e:
         print(e)
         browser.driver.close()
