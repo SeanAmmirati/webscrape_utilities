@@ -12,6 +12,8 @@ import yaml
 import win32com.client
 from outlook_utility import OutlookEmailUtility
 from webdriver import WebDriverUtil
+from helpers import create_abs_path
+
 
 class HumbleBundleHelper(WebDriverUtil):
     def __init__(self):
@@ -19,7 +21,6 @@ class HumbleBundleHelper(WebDriverUtil):
 
     def login_to_humble(self, login, password):
         self.access_website(self.HUMBLE['URL'])
-        import pdb; pdb.set_trace()
         login_class = self.HUMBLE['LOGIN_LOC']
         login_button = self.driver.find_element(By.XPATH, login_class)
         login_button.click()
@@ -43,12 +44,14 @@ class HumbleBundleHelper(WebDriverUtil):
         return code
 
 if __name__ == '__main__':
-    # login_info = yaml.load(open('../conf/secrets.yaml'))['sign_in']
-    # login = login_info['email_address']
-    # password = login_info['password']
+    secrets_file = create_abs_path(__file__, '../conf/secrets.yaml')
+    login_info = yaml.load(open(secrets_file))['sign_in']
+    login = login_info['email_address']
+    password = login_info['password']
+
     try:
         browser = HumbleBundleHelper()
-        browser.find_outlook_code(20)
+        browser.login_to_humble(login, password)
     except Exception as e:
         print(e)
         browser.driver.close()
