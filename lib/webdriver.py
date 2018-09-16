@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import yaml
-import sys
 from helpers import create_abs_path
 
 
@@ -31,6 +30,7 @@ class WebDriverUtil(object):
         for link in links[0: n]:
             url = link.find_element_by_css_selector('a').get_attribute('href')
             self.driver.get(url)
+
 
 if __name__ == '__main__':
     wbd = WebDriverUtil()

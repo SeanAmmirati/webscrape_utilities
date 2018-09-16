@@ -10,8 +10,9 @@ import itertools
 import yaml
 import re
 
+
 class OutlookEmailUtility(object):
-    def __init__(self, CONFIG_PATH = None, CONFIG_KEY = None, **kwargs):
+    def __init__(self, CONFIG_PATH=None, CONFIG_KEY=None, **kwargs):
         if not CONFIG_PATH or CONFIG_KEY:
             CONFIG_PATH = '../conf/config.yaml'
             CONFIG_KEY = 'outlook'
@@ -22,7 +23,7 @@ class OutlookEmailUtility(object):
             setattr(self, k, v)
 
         outlook = win_client.Dispatch(self.APPLICATION_NAME)\
-                                     .GetNamespace(self.NAMESPACE_NAME)
+                            .GetNamespace(self.NAMESPACE_NAME)
         self.inbox = outlook.GetDefaultFolder(self.DEFAULT_FOLDER).Items
 
     def search_email_subject(self, search_term):
@@ -36,7 +37,6 @@ class OutlookEmailUtility(object):
 
         except AssertionError:
             raise ValueError('Could not find relevant email.')
-
 
         return self.search_results
 
