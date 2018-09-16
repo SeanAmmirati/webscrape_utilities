@@ -16,10 +16,37 @@ from webdriver import WebDriverUtil
 
 
 class HumbleBundleHelper(WebDriverUtil):
+    """
+    A Utility to sign into Humble Bundle and download specific files.
+
+    Attributes
+    ----------
+    HUMBLE: dict
+        A dictionary containing the relevant arguments to the Humble Bundle website.
+        Relevant attributes are contained in the YAML file at config.yaml.
+    OUTLOOK: dict
+        A dictionary containing the relevant arguments to searching for Outlook email.
+        Relevant attributes are contained in the YAML file at config.yaml.
+    CAPTCHA_WAIT_TIME: int
+        Number of seconds to wait to solve Captcha (must be done by user).
+    """
+
     def __init__(self):
+        """Inherits from WebDriver class to use Selenium.
+        """
         super(HumbleBundleHelper, self).__init__()
 
     def login_to_humble(self, login, password):
+        """
+        Logs into HumbleBundle with supplied login and password.
+
+        Parameters
+        ----------
+        login : str
+            Login user information to Humble Bundle (an email address)
+        password : str
+            Login password
+        """
         self.access_website(self.HUMBLE['URL'])
         LOGIN_CLASS = self.HUMBLE['LOGIN_LOC']
         login_button = self.driver.find_element(By.XPATH, LOGIN_CLASS)
@@ -31,9 +58,21 @@ class HumbleBundleHelper(WebDriverUtil):
         email_entry.send_keys(Keys.RETURN)
 
     def solving_captcha(self):
+        """Waits a specified number of seconds before continuing for CAPTCHA.
+
+        """
         sleep(self.CAPTCHA_WAIT_TIME)
 
     def find_outlook_code(self, search_depth):
+        """Finds validation code sent by utilizing Outlook.
+
+        Parameters
+        ----------
+        search_depth : int
+            How many emails to search for Humble Bundle email? Too long may include
+            old validation files, while too short may miss it.
+
+        """
         SUBJECT_SEARCH = self.HUMBLE['SUBJECT_SEARCH']
         BODY_SEARCH = self.HUMBLE['BODY_SEARCH']
 
