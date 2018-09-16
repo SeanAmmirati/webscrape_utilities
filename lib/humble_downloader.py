@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Created on Sat Aug 25 14:04:02 2018
 
@@ -18,38 +18,37 @@ class HumbleBundleHelper(WebDriverUtil):
         super(HumbleBundleHelper, self).__init__()
 
     def login_to_humble(self, login, password):
-        self.access_website('https://www.humblebundle.com')
-        login_class = self.humble['HUMBLE_LOGIN_LOC']
-        login_button =  self.driver.find_element(By.XPATH, login_class)
+        self.access_website(self.HUMBLE['URL'])
+        import pdb; pdb.set_trace()
+        login_class = self.HUMBLE['LOGIN_LOC']
+        login_button = self.driver.find_element(By.XPATH, login_class)
         login_button.click()
         email_entry = self.driver.find_element_by_name('username')
         email_entry.send_keys(login)
         password_entry = self.driver.find_element_by_name('password')
         password_entry.send_keys(password)
         email_entry.send_keys(Keys.RETURN)
-        
+
     def solving_captcha(self):
         pass
-        
+
     def find_outlook_code(self, search_depth):
-        BODY_SEARCH = self.humble['HUMBLE_BODY_SEARCH']
-        outlook = OutlookEmailUtility(**self.outlook)
-        email_body = outlook.search_email_subject('Humble.*Protection').\
+        BODY_SEARCH = self.HUMBLE['BODY_SEARCH']
+        OUTLOOK = OutlookEmailUtility(**self.OUTLOOK)
+        email_body = OUTLOOK.search_email_subject('Humble.*Protection').\
                                                   values()
-        code = outlook.search_email_body(search_term=BODY_SEARCH, 
+        code = OUTLOOK.search_email_body(search_term=BODY_SEARCH,
                                          body=str(email_body),
-                                         grp_num='code')         
-        return code            
-        
+                                         grp_num='code')
+        return code
+
 if __name__ == '__main__':
-    login_info = yaml.load(open('../conf/secrets.yaml'))['sign_in']
-    login = login_info['email_address']
-    password = login_info['password']
+    # login_info = yaml.load(open('../conf/secrets.yaml'))['sign_in']
+    # login = login_info['email_address']
+    # password = login_info['password']
     try:
         browser = HumbleBundleHelper()
         browser.find_outlook_code(20)
     except Exception as e:
         print(e)
         browser.driver.close()
-        
-    

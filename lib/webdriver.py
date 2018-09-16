@@ -1,24 +1,19 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import yaml
-import os
 import sys
+from helpers import create_abs_path
 
 
 class WebDriverUtil(object):
     def __init__(self):
         # Initializes arguments in config file
-        conf_path = self.create_abs_path('../conf/config.yaml')
+        conf_path = create_abs_path(__file__, '../conf/config.yaml')
         argdict = yaml.load(open(conf_path, 'rb'))
         for arg, key in argdict.items():
             setattr(self, arg, key)
-        driver_path = self.create_abs_path(self.PATH_TO_DRIVER)
+        driver_path = create_abs_path(__file__, self.PATH_TO_DRIVER)
         self.driver = webdriver.Chrome(driver_path)
-
-    def create_abs_path(self, relative):
-        file_dir = os.path.dirname(__file__)
-        rel_path = os.path.join(file_dir, relative)
-        return os.path.abspath(rel_path)
 
     def access_website(self, website):
         self.driver.get(website)
@@ -36,7 +31,6 @@ class WebDriverUtil(object):
         for link in links[0: n]:
             url = link.find_element_by_css_selector('a').get_attribute('href')
             self.driver.get(url)
-
 
 if __name__ == '__main__':
     wbd = WebDriverUtil()
